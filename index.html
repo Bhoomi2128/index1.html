@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>His Journey to Happiness</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #333;
+      overflow: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 700px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    #poem {
+      font-family: 'Georgia', serif;
+      font-size: 1.1rem;
+      white-space: pre-line;
+      margin: 20px 0;
+    }
+
+    .heart-btn {
+      font-size: 24px;
+      color: red;
+      cursor: pointer;
+      margin: 10px;
+      animation: heartbeat 1s infinite;
+      transition: transform 0.3s ease;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #3b82f6;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #secretMessage {
+      display: none;
+      font-style: italic;
+      margin-top: 10px;
+      color: #e91e63;
+      font-size: 1.1rem;
+    }
+
+    .heart-float {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      font-size: 20px;
+      color: red;
+      animation: floatHearts 4s linear infinite;
+    }
+
+    .floating-heart {
+      position: fixed;
+      bottom: 0;
+      animation: floatHearts 4s ease-in-out forwards;
+    }
+
+    #loveContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .loveText {
+      position: absolute;
+      font-size: 20px;
+      color: #e91e63;
+      animation: floatUp 2s ease-out forwards;
+      font-weight: bold;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+    }
+
+    @keyframes floatHearts {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    #countdown {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #musicBtn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 9999;
+      padding: 10px 15px;
+      border-radius: 10px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Surprise Popup -->
+  <div id="popup" style="position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); background: #fff0f6; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 9999; text-align: center;">
+    <h3 style="color: #e91e63; font-family: 'Pacifico', cursive;">Surprise!</h3>
+    <p style="font-size: 1.1rem;">Just wanted to say... you're the most special part of my world!</p>
+    <button onclick="document.getElementById('popup').style.display='none'" style="margin-top: 10px; padding: 8px 20px; background-color: #e91e63; color: white; border: none; border-radius: 10px; cursor: pointer;">Aww, thank you!</button>
+  </div>
+
+  <div class="heart-float">❤</div>
+  <div class="card">
+    <img src="https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif" alt="Love gif" class="love-gif" width="100px">
+    <h1>His Journey to Happiness</h1>
+    <div id="poem"></div>
+    <div class="heart-btn">❤</div>
+    <div id="loveCount">I love you 1000000 times!</div>
+    <button id="revealBtn">Reveal My Heart</button>
+    <div id="secretMessage">You are my peace, my prayer, and my forever. I’m so proud of the man you’ve become.</div>
+    <button id="kissBtn">Sending You a Kiss</button>
+    <button id="loveAnimBtn">Send Love</button>
+    <div id="loveContainer"></div>
+    <div id="countdown"></div>
+  </div>
+  <script>
+    window.onload = function () {
+      const poemText = `He went through pain, through dark, tough days,
+But love stayed strong in many ways.
+Rap songs helped him feel alright,
+Dreaming big, reaching new heights.
+
+Mc Stan’s beats, Darshan’s tune,
+Songs that heal beneath the moon.
+Music keeps him standing tall,
+Through every rise, through every fall.
+
+His mother cared, she stood so tall,
+But pushed him hard to make him strong.
+She wanted him to stand alone,
+To build his life, to be his own.
+
+Yet one light always stayed so bright,
+His sister’s love, a guiding light.
+Now she’s married, her life is grand,
+With two sweet daughters, hand in hand.
+
+A happy home, a love so true,
+A peaceful life, dreams come through.
+She smiles with pride, she prays for him,
+Wishing his path will never dim.
+
+So he left home, found his way,
+In Bangalore, he chose to stay.
+Peace he found, his dreams grew bright,
+A future shining full of light.
+
+I pray for him, so he can be,
+A billionaire, so happy, free.
+To bring his mother joy once more,
+To build a life he’s hoping for.
+
+He’ll convince my family, make them see,
+That he’s the one, the one for me.
+We’ll marry, build a home so new,
+A happy life for me and you.
+
+One day, he’ll smile and proudly say,
+“I made it through, I found my way.”`;
+
+      let i = 0;
+      function typePoem() {
+        if (i < poemText.length) {
+          document.getElementById("poem").innerHTML += poemText.charAt(i);
+          i++;
+          setTimeout(typePoem, 20);
+        }
+      }
+
+      typePoem();
+
+      document.querySelector(".heart-btn").addEventListener("click", function () {
+        let love = parseInt(localStorage.getItem("loveCount") || 0);
+        love++;
+        localStorage.setItem("loveCount", love);
+        document.getElementById("loveCount").innerText = 'I love you infinity times!';
+      });
+
+      const savedLove = localStorage.getItem("loveCount");
+      if (savedLove) {
+        document.getElementById("loveCount").innerText = 'I love you infinity times!';
+      }
+
+      document.getElementById("revealBtn").addEventListener("click", () => {
+        document.getElementById("secretMessage").style.display = 'block';
+        confetti();
+      });
+
+      document.getElementById("kissBtn").addEventListener("click", () => {
+        const kiss = document.createElement("div");
+        kiss.textContent = "💋";
+        kiss.className = "floating-heart";
+        kiss.style.left = Math.random() * 100 + "vw";
+        kiss.style.fontSize = "30px";
+        document.body.appendChild(kiss);
+        setTimeout(() => kiss.remove(), 4000);
+        confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+      });
+
+      document.getElementById("loveAnimBtn").addEventListener("click", () => {
+        const loveText = document.createElement("div");
+        loveText.textContent = "❤ I Love You! ❤";
+        loveText.className = "loveText";
+        loveText.style.left = Math.random() * 100 + "vw";
+        loveText.style.top = "80px";
+        document.getElementById("loveContainer").appendChild(loveText);
+        setTimeout(() => loveText.remove(), 2000);
+      });
+
+      const countDownDate = new Date("May 10, 2025 00:00:00").getTime();
+      const countdown = document.getElementById("countdown");
+
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        if (distance < 0) {
+          countdown.innerHTML = "Happy Day!";
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hrs = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((distance % (1000 * 60)) / 1000);
+        }
+      }, 1000);
+    }
+
+    document.getElementById("musicBtn").addEventListener("click", () => {
+      const music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+        document.getElementById("musicBtn").innerText = "Pause Music";
+      } else {
+        music.pause();
+        document.getElementById("musicBtn").innerText = "Play Music";
+      }
+    });
+  </script>
+</body>
+</html>
