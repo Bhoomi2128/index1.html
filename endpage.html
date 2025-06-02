@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Over</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: linear-gradient(to right, #ff512f, #dd2476); color: white; padding: 20px; }
+        .container { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 10px; width: 400px; margin: auto; }
+        .btn { margin-top: 15px; padding: 10px 20px; background: #ffcc00; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body onload="displayScore()">
+
+    <div class="container">
+        <h1>Game Over!</h1>
+        <p>Your Final Score: <span id="score">0</span></p>
+        <button class="btn" onclick="restartGame()">Play Again</button>
+        <button class="btn" onclick="goToClosing()">Close Game</button>
+    </div>
+
+    <script>
+        function displayScore() {
+            let score = sessionStorage.getItem("finalScore") || 0;
+            document.getElementById("score").textContent = score;
+        }
+
+        function restartGame() {
+            window.location.href = "gamepage.html";
+        }
+
+        function goToClosing() {
+            window.location.href = "closing.html";
+        }
+    </script>
+
+</body>
+</html>
